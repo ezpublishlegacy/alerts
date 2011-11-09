@@ -1,7 +1,7 @@
 {* Main Alerts Include *}
 {def $alerts = $current_node_id|alert_list()}
 <div id="alerts">
-	<span class="close"><img alt="" src="/extension/site/design/site/images/alert-close.png" width="11" height="12" /></span>
+	<span class="close"></span>
 	{foreach $alerts as $alert}
 		{node_view_gui view='embed' content_node=$alert}
 	{/foreach}
