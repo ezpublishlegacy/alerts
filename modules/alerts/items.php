@@ -33,7 +33,14 @@ do{
 	}
 
 	if($Items = eZContentObjectTreeNode::subTreeByNodeID($FetchParameters, $PathNodeID)){
-		$ItemsNodeList = array_merge($ItemsNodeList, $Items);
+		if($TreeSort == 'true'){
+			foreach($Items as $Item) {
+				array_unshift($ItemsNodeList, $Item);
+				continue;
+			}
+		}else{
+			$ItemsNodeList = array_merge($ItemsNodeList, $Items);
+		}
 	}
 
 	if($PathNodeID == $RootNodeID || next($ContentPath) === false){

@@ -9,7 +9,7 @@ $ViewList = array();
 $ViewList['items'] = array(
 	'name' => 'Alert Items',
 	'script' => 'items.php',
-	'params' => array('ClassID', 'SourceNodeID')
+	'params' => array('ClassID', 'SourceNodeID', 'TreeSort')
 );
 
 
