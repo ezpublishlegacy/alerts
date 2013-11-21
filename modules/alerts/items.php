@@ -4,6 +4,14 @@ $ModuleTools = ModuleTools::initialize($Params);
 $ModuleTools->isCacheable(true);
 
 $ContentNode = eZContentObjectTreeNode::fetch($SourceNodeID);
+
+if (!is_object($ContentNode)) {
+	return array(
+		'count' => 0,
+		'content' => ''
+	);
+}
+
 $ContentClass = eZContentClass::fetch($ClassID);
 $RootNodeID = eZINI::instance('content.ini')->variable('NodeSettings', 'RootNode');
 $Settings = eZINI::instance('alert.ini')->group('AlertSettings');
