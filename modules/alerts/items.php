@@ -20,44 +20,44 @@ $ContentPath = array_reverse($ContentNode->pathArray());
 $Continue = true;
 
 if($Settings['SortType'] == 'tree' || $Settings['SortType'] == 'current'){
-$FetchParameters = array(
-	'Depth' => 1,
-	'ClassFilterType' => 'include',
-	'ClassFilterArray' => array($ContentClass->Identifier)
-);
+	$FetchParameters = array(
+		'Depth' => 1,
+		'ClassFilterType' => 'include',
+		'ClassFilterArray' => array($ContentClass->Identifier)
+	);
 
-$SortArray = $ContentNode->sortArray();
-if($SortArray[0][0] == 'priority'){
-	$FetchParameters = array_merge($FetchParameters, array(
-		'SortBy' => array('priority', true)
-	));
-}
-$ItemsNodeList = array();
-do{
-	$PathNodeID = current($ContentPath);
-
-	if($ContentNode->NodeID != $PathNodeID){
+	$SortArray = $ContentNode->sortArray();
+	if($SortArray[0][0] == 'priority'){
 		$FetchParameters = array_merge($FetchParameters, array(
-			'AttributeFilter' => array(array($ContentClass->Identifier.'/persistent', '=', 1))
+			'SortBy' => array('priority', true)
 		));
 	}
+	$ItemsNodeList = array();
+	do{
+		$PathNodeID = current($ContentPath);
 
-	if($Items = eZContentObjectTreeNode::subTreeByNodeID($FetchParameters, $PathNodeID)){
-		if($Settings['SortType'] == 'current'){
-			foreach($Items as $Item) {
-				array_unshift($ItemsNodeList, $Item);
-				continue;
-			}
-		}else{
-			$ItemsNodeList = array_merge($ItemsNodeList, $Items);
+		if($ContentNode->NodeID != $PathNodeID){
+			$FetchParameters = array_merge($FetchParameters, array(
+				'AttributeFilter' => array(array($ContentClass->Identifier.'/persistent', '=', 1))
+			));
 		}
-	}
 
-	if($PathNodeID == $RootNodeID || next($ContentPath) === false){
-		$Continue = false;
-	}
+		if($Items = eZContentObjectTreeNode::subTreeByNodeID($FetchParameters, $PathNodeID)){
+			if($Settings['SortType'] == 'current'){
+				foreach($Items as $Item) {
+					array_unshift($ItemsNodeList, $Item);
+					continue;
+				}
+			}else{
+				$ItemsNodeList = array_merge($ItemsNodeList, $Items);
+			}
+		}
 
-}while($Continue);
+		if($PathNodeID == $RootNodeID || next($ContentPath) === false){
+			$Continue = false;
+		}
+
+	}while($Continue);
 }
 
 if($Settings['SortType'] == 'severity'){
@@ -76,7 +76,8 @@ if($Settings['SortType'] == 'severity'){
 		'ClassFilterType' => 'include',
 		'ClassFilterArray' => array($ContentClass->Identifier)
 	);
-        foreach($ContentPath as $key => $alert_node){
+	
+    foreach($ContentPath as $key => $alert_node){
 		if($key == 0){
 			$Items = eZContentObjectTreeNode::subTreeByNodeID($FetchParameters, $alert_node);
 			$CurrentNodeList = array_merge($CurrentNodeList, $Items);
@@ -99,7 +100,9 @@ if($Settings['SortType'] == 'severity'){
 			}
 			$CurrentNodeList = array_merge($CurrentNodeList, $Items);
 		}
-        }
+		if($alert_node == $RootNodeID) break;
+	}
+	
 	$CurrentNodeList = array_merge($high_root, $CurrentNodeList);
 
 	$Items = $ModuleTools->fetchResult(array(
