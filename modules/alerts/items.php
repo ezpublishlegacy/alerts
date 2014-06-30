@@ -87,7 +87,7 @@ if($Settings['SortType'] == 'severity'){
 			$Items = eZContentObjectTreeNode::subTreeByNodeID($PersistParameters, $alert_node);
 			$CurrentNodeList = array_merge($CurrentNodeList, $Items);
 		}
-		if($alert_node == 2){
+		if($alert_node == $RootNodeID){
 			$Items = eZContentObjectTreeNode::subTreeByNodeID($PersistParameters, $alert_node);
 			foreach($Items as $i => $Item){
 				$Datamap = $Item->dataMap();
