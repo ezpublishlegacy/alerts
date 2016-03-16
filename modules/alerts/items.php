@@ -16,6 +16,13 @@ $ContentClass = eZContentClass::fetch($ClassID);
 $RootNodeID = eZINI::instance('content.ini')->variable('NodeSettings', 'RootNode');
 $Settings = eZINI::instance('alert.ini')->group('AlertSettings');
 
+if( $ContentNode instanceof eZContentObjectTreeNode === false ) {
+	return array(
+		'count'   => 0,
+		'content' => array()
+	);
+}
+
 $ContentPath = array_reverse($ContentNode->pathArray());
 $Continue = true;
 
